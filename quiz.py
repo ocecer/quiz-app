@@ -2,8 +2,15 @@ import random
 
 
 class question:
+    # Questions in the database
     questionDB = {}
+    # Total number of questions in database
     questionNr = 0
+
+    # list of the idex numbers of selected questions in getQuestion
+    selectedQuestions_lst = []
+    # Index nr of selected question
+    questionIndex = 0
 
     def __init__(self):
         pass
@@ -22,28 +29,17 @@ class question:
                                    f"Choices{question.questionNr}": self.choices, f"Answer{question.questionNr}": self.answer})
 
     def getQuestion(self):
-        self.selectedQuestions_lst = []
-        self.selectQuestionNr = 0
-        i = 0
+        question.questionIndex = random.randint(0, question.questionNr)
 
-        while i <= question.questionNr:
-            self.selectQuestionNr = random.randint(0, question.questionNr)
-            print(self.selectedQuestions_lst)
-            print(self.selectQuestionNr)
-
-            # if any(self.selectQuestionNr == j for j in self.selectedQuestions_lst):
-            if self.selectedQuestions_lst.count(self.selectQuestionNr) > 0:
-                i += 1
-                self.questionFound = False
-                continue
-            else:
-                self.questionFound = True
-                break
-
-        if self.questionFound:
-            self.selectedQuestions_lst.append(self.selectQuestionNr)
-            return question.questionDB.get(f"Question{self.selectQuestionNr}")
+        # if any(question.questionIndex == j for j in question.selectedQuestions_lst):
+        if question.selectedQuestions_lst.count(question.questionIndex) > 0:
+            self.questionFound = False
         else:
+            self.questionFound = True
+            question.selectedQuestions_lst.append(question.questionIndex)
+            return question.questionDB.get(f"Question{question.questionIndex}")
+
+        if not self.questionFound:
             return "There are not any new questions"
 
 
@@ -62,21 +58,4 @@ print("\n***********************\n")
 
 gq = question().getQuestion()
 print(gq)
-
-gq = question().getQuestion()
-print(gq)
-
-gq = question().getQuestion()
-print(gq)
-
-gq = question().getQuestion()
-print(gq)
-
-gq = question().getQuestion()
-print(gq)
-
-gq = question().getQuestion()
-print(gq)
-
-gq = question().getQuestion()
-print(gq)
+print(question.selectedQuestions_lst)
