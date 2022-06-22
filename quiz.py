@@ -5,12 +5,13 @@ class question:
     # Questions in the database
     questionDB = {}
     # Total number of questions in database
-    questionNr = 0
+    totalQuestionNr = 0
 
-    # list of the idex numbers of selected questions in getQuestion
-    # selectedQuestions_lst = []
     # Index nr of selected question
     questionIndex = 0
+
+    score = 0
+    questionNr = 0
 
     def __init__(self):
         pass
@@ -21,14 +22,11 @@ class question:
         self.answer = _answer
 
         if len(question.questionDB.keys()) == 0:
-            question.questionNr = 0
+            question.totalQuestionNr = 0
         else:
-            # question.questionNr = int(len(question.questionDB.keys())/3)
-            question.questionNr = len(question.questionDB.keys())
+            question.totalQuestionNr = len(question.questionDB.keys())
 
-        # question.questionDB.update({f"Question{question.questionNr}": self.question,
-        #                            f"Choices{question.questionNr}": self.choices, f"Answer{question.questionNr}": self.answer})
-        question.questionDB.update({f"Question{question.questionNr}": [
+        question.questionDB.update({f"Question{question.totalQuestionNr}": [
                                    self.question]+[self.choices]+[self.answer]})
 
         dummy_questionDB = list(question.questionDB.items())
@@ -38,28 +36,34 @@ class question:
     def getQuestion(self):
         self.questionDisplay = ""
         self.choicesDisplay = ""
+        self.answerDisplay = ""
+        self.userAnswer = ""
 
-        self.questionDisplay = list(question.questionDB.values())[
-            question.questionIndex][0]
-        self.choicesDisplay = list(question.questionDB.values())[
-            question.questionIndex][1]
-        question.questionIndex = list(question.questionDB.keys())[
-            question.questionIndex]
-        # return question.questionDB.get(f"Question{question.questionIndex}")[0]
-        return f"{question.questionIndex}: {self.questionDisplay}\nA: {self.choicesDisplay[0]}\nB: {self.choicesDisplay[1]}\nC: {self.choicesDisplay[2]}\nD: {self.choicesDisplay[3]}"
+        if question.questionIndex > question.totalQuestionNr:
+            print(f"There are not more questions. Your score is {question.score}.")
+        else:
+            question.questionNr = list(question.questionDB.keys())[
+                question.questionIndex]
+            self.questionDisplay = list(question.questionDB.values())[
+                question.questionIndex][0]
+            self.choicesDisplay = list(question.questionDB.values())[
+                question.questionIndex][1]
+            self.answerDisplay = list(question.questionDB.values())[
+                question.questionIndex][2]
 
-        # question.questionIndex = random.randint(0, question.questionNr)
+            print(
+                f"{question.questionNr}: {self.questionDisplay}\nA: {self.choicesDisplay[0]}\nB: {self.choicesDisplay[1]}\nC: {self.choicesDisplay[2]}\nD: {self.choicesDisplay[3]}")
 
-        # # if any(question.questionIndex == j for j in question.selectedQuestions_lst):
-        # if question.selectedQuestions_lst.count(question.questionIndex) > 0:
-        #     self.questionFound = False
-        # else:
-        #     self.questionFound = True
-        #     question.selectedQuestions_lst.append(question.questionIndex)
-        #     return question.questionDB.get(f"Question{question.questionIndex}")
+            self.userAnswer = input("Your answer: ")
 
-        # if not self.questionFound:
-        #     return "There are not any new questions"
+            if self.userAnswer == self.answerDisplay:
+                question.score += 1
+                print(f"Correct answer! Your score is {question.score}.")
+            else:
+                print(
+                    f"Incorrect answer! Answer should have to be {self.answerDisplay}. Your score is {question.score}.")
+
+            question.questionIndex += 1
 
 
 q1 = question().submitQuestion(
@@ -76,8 +80,9 @@ print(question.questionDB)
 print("\n***********************\n")
 
 gq = question().getQuestion()
-print(gq)
 gq = question().getQuestion()
-print(gq)
 gq = question().getQuestion()
-print(gq)
+gq = question().getQuestion()
+gq = question().getQuestion()
+gq = question().getQuestion()
+# print(gq)
